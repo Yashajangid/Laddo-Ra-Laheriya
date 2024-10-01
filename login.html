@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Laddoo ra Lehariya</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Laddoo ra Lehariya</div>
+            <ul>
+                <li><a href="index.html" class="lang" data-lang="en">Home</a><a href="index.html" class="lang" data-lang="hi" style="display: none;">मुख पृष्ठ</a></li>
+                <li><a href="about.html" class="lang" data-lang="en">About Us</a><a href="about.html" class="lang" data-lang="hi" style="display: none;">हमारे बारे में</a></li>
+                <li><a href="login.html" class="lang" data-lang="en">Login</a><a href="login.html" class="lang" data-lang="hi" style="display: none;">लॉग इन करें</a></li>
+                <li><a href="#" id="language-toggle">EN/HIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="login-section">
+        <h1 class="lang" data-lang="en">Login</h1>
+        <h1 class="lang" data-lang="hi" style="display: none;">लॉग इन करें</h1>
+        <form>
+            <label for="email" class="lang" data-lang="en">Email:</label>
+            <label for="email" class="lang" data-lang="hi" style="display: none;">ईमेल:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password" class="lang" data-lang="en">Password:</label>
+            <label for="password" class="lang" data-lang="hi" style="display: none;">पासवर्ड:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" class="lang" data-lang="en">Login</button>
+            <button type="submit" class="lang" data-lang="hi" style="display: none;">लॉग इन करें</button>
+        </form>
+    </section>
+
+    <footer>
+        <p class="lang" data-lang="en">&copy; 2024 Laddoo ra Lehariya. All Rights Reserved.</p>
+        <p class="lang" data-lang="hi" style="display: none;">&copy; 2024 लड्डू रा लहरिया। सर्वाधिकार सुरक्षित।</p>
+    </footer>
+</body>
+</html>
