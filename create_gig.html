@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Gig - Laddoo ra Lehariya</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Laddoo ra Lehariya</div>
+            <ul>
+                <li><a href="index.html" class="lang" data-lang="en">Home</a><a href="index.html" class="lang" data-lang="hi" style="display: none;">मुख पृष्ठ</a></li>
+                <li><a href="seller_dashboard.html" class="lang" data-lang="en">Dashboard</a><a href="seller_dashboard.html" class="lang" data-lang="hi" style="display: none;">डैशबोर्ड</a></li>
+                <li><a href="profile.html" class="lang" data-lang="en">Profile</a><a href="profile.html" class="lang" data-lang="hi" style="display: none;">प्रोफ़ाइल</a></li>
+                <li><a href="#" id="language-toggle">EN/HIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="create-gig-section">
+        <h1 class="lang" data-lang="en">Create New Gig</h1>
+        <h1 class="lang" data-lang="hi" style="display: none;">नया गिग बनाएं</h1>
+        <form>
+            <label for="gig-title" class="lang" data-lang="en">Gig Title:</label>
+            <label for="gig-title" class="lang" data-lang="hi" style="display: none;">गिग का शीर्षक:</label>
+            <input type="text" id="gig-title" name="gig-title" required>
+            
+            <label for="gig-description" class="lang" data-lang="en">Description:</label>
+            <label for="gig-description" class="lang" data-lang="hi" style="display: none;">विवरण:</label>
+            <textarea id="gig-description" name="gig-description" rows="4" required></textarea>
+            
+            <label for="gig-category" class="lang" data-lang="en">Category:</label>
+            <label for="gig-category" class="lang" data-lang="hi" style="display: none;">श्रेणी:</label>
+            <select id="gig-category" name="gig-category" required>
+                <option value="stitching" class="lang" data-lang="en">Stitching</option>
+                <option value="stitching" class="lang" data-lang="hi" style="display: none;">सिलाई</option>
+                <option value="crafts" class="lang" data-lang="en">Crafts</option>
+                <option value="crafts" class="lang" data-lang="hi" style="display: none;">शिल्प</option>
+                <!-- Add more categories as needed -->
+            </select>
+            
+            <label for="gig-image" class="lang" data-lang="en">Upload Image:</label>
+            <label for="gig-image" class="lang" data-lang="hi" style="display: none;">इमेज अपलोड करें:</label>
+            <input type="file" id="gig-image" name="gig-image" accept="image/*" required>
+            
+            <button type="submit" class="lang" data-lang="en">Create Gig</button>
+            <button type="submit" class="lang" data-lang="hi" style="display: none;">गिग बनाएं</button>
+        </form>
+    </section>
+</body>
+</html>
