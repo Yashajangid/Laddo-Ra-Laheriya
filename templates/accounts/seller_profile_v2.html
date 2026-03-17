@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile (Seller){% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'css/seller_profile.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="seller-wrap">
+
+  <!-- HEADER -->
+  <div class="seller-header">
+    <div class="seller-brand">
+      <strong>Laddoo Ra Laheriya</strong>
+      <span>Seller Dashboard</span>
+    </div>
+  </div>
+
+  <div class="seller-container">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="seller-sidebar">
+  <ul class="seller-menu">
+    <li class="active">
+      <i class="ri-user-line"></i>
+      <span>Personal Info</span>
+    </li>
+    
+    <li>
+      <i class="ri-store-2-line"></i>
+      <span>Gigs</span>
+    </li>
+    <li>
+      <i class="ri-line-chart-line"></i>
+      <span>Analytics</span>
+    </li>
+    <li>
+      <i class="ri-shopping-bag-line"></i>
+      <span>Orders</span>
+    </li>
+  </ul>
+
+  <div class="menu-divider">SETTINGS</div>
+
+  <ul class="seller-menu">
+    <li>
+      <i class="ri-bank-card-line"></i>
+      <span>Payments</span>
+    </li>
+    <li>
+      <i class="ri-settings-3-line"></i>
+      <span>Account Settings</span>
+    </li>
+    <li>
+      <i class="ri-shield-check-line"></i>
+      <span>Privacy & Security</span>
+    </li>
+  </ul>
+</aside>
+
+
+    <!-- MAIN -->
+    <main class="seller-main">
+
+      <section class="card">
+        <h3 class="section-title"><i class="ri-profile-line"></i> Personal Information</h3>
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="profile-image">
+            <div class="avatar"><i class="ri-user-line"></i></div>
+            <label class="btn btn-outline">
+              <i class="ri-upload-2-line"></i> Upload Image
+              <input type="file" name="avatar" hidden>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            {{ form.as_p }}
+          </div>
+
+          <div class="actions">
+            <button type="reset" class="btn btn-outline">Reset</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </section>
+<!-- SOCIAL MEDIA / CONNECT HANDLES -->
+<section class="card">
+  <h3 class="section-title">
+    <i class="ri-share-line"></i> Social Media Profiles
+  </h3>
+
+  <div class="social-box">
+    <div class="social-grid">
+
+      <div>
+        <label>Instagram</label>
+        {{ form.instagram }}
+      </div>
+
+      <div>
+        <label>Twitter / X</label>
+        {{ form.twitter }}
+      </div>
+
+      <div>
+        <label>LinkedIn</label>
+        {{ form.linkedin }}
+      </div>
+
+      <div>
+        <label>WhatsApp Business</label>
+        {{ form.whatsapp }}
+      </div>
+
+      <div class="full">
+        <label>Public Email</label>
+        {{ form.public_email }}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      <section class="card">
+        <h3 class="section-title"><i class="ri-store-2-line"></i> Gig Management</h3>
+        <div class="actions left">
+          <a href="{% url 'gigs:new' %}" class="btn btn-primary">
+            <i class="ri-add-line"></i> Upload a Gig
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- RIGHT STATS -->
+    <aside class="seller-stats">
+      <div class="card stat">
+        <small>Total Earnings</small>
+        <h2>—</h2>
+      </div>
+      <div class="card stat">
+        <small>Active Orders</small>
+        <h2>—</h2>
+      </div>
+      <div class="card stat">
+        <small>Seller Rating</small>
+        <h2>—</h2>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+{% endblock %}

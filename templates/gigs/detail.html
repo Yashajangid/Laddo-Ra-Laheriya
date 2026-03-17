@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ gig.title }} — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <div class="modal__grid">
+    <img class="modal__img" src="{{ gig.image_url }}" alt="{{ gig.title }}">
+  {% if gig.image %}
+  <img class="modal__img" src="{{ gig.image.url }}" alt="{{ gig.title }}">
+{% else %}
+  <img class="modal__img" src="{% static 'img/p1.png' %}" alt="{{ gig.title }}">
+{% endif %}
+
+    <div>
+      <h2>{{gig.title}}</h2>
+      <p class="muted">Category: {{gig.get_category_display}} • Origin: {{gig.state}}</p>
+      <p class="price">₹{{gig.price_after_discount}}</p>
+      <form action="{% url 'cart:add' %}" method="post" class="row">{% csrf_token %}
+        <input type="hidden" name="gig_id" value="{{gig.id}}">
+        <input name="size" placeholder="Size" value="{{gig.sizes|default:'Free'}}">
+        <input type="number" name="qty" value="1" min="1" style="width:100px">
+        <button class="btn" type="submit">Add to Cart</button>
+        <a class="btn ghost" href="{% url 'chatx:room' gig.id %}">Chat with Seller</a>
+      </form>
+      <p style="margin-top:10px">{{gig.description}}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

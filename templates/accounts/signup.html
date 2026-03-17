@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Laddo Ra Laheriya</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <style>
+    @font-face{font-family:'AlibabaSans-Bold';src:url('https://assets-persist.lovart.ai/agent-static-assets/Alibaba-PuHuiTi-Bold.otf') format('opentype');font-weight:700}
+    @font-face{font-family:'AlibabaSans-Regular';src:url('https://assets-persist.lovart.ai/agent-static-assets/AlibabaSans-Regular.otf') format('opentype');font-weight:400}
+    @font-face{font-family:'AlibabaSans-Medium';src:url('https://assets-persist.lovart.ai/agent-static-assets/AlibabaSans-Medium.otf') format('opentype');font-weight:500}
+
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'AlibabaSans-Regular',sans-serif}
+    body{background:#FFF8F0;color:#333;max-width:1440px;margin:0 auto}
+    header{display:flex;align-items:center;gap:10px;padding:20px 40px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+    .logo-icon{color:#E25822;font-size:28px}
+    .logo-text{font:700 24px 'AlibabaSans-Bold',sans-serif;color:#E25822}
+    .page-wrapper{position:relative;min-height:100vh;overflow:hidden}
+    .decorative-element{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(226,88,34,.1);z-index:-1}
+    .decorative-1{top:100px;left:100px}
+    .decorative-2{bottom:100px;right:100px;background:rgba(0,128,128,.1)}
+
+    .container{max-width:500px;margin:40px auto;padding:40px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+    h1{font:700 32px 'AlibabaSans-Bold',sans-serif;color:#E25822;margin-bottom:30px;text-align:center}
+
+    .form-group{margin-bottom:18px}
+    label{display:block;font:500 14px 'AlibabaSans-Medium',sans-serif;margin-bottom:8px;color:#555}
+    input,select{width:100%;padding:12px 16px;border:1px solid #ddd;border-radius:8px;font-size:16px;background:#fff;transition:border .2s}
+    input:focus,select:focus{outline:none;border-color:#E25822}
+    .helper-text{display:block;font-size:13px;color:#777;margin-top:6px}
+
+    .errorlist{margin:6px 0 0;padding-left:18px;color:#c53030;font-size:13px}
+    .nonfield{margin:0 0 12px;color:#c53030;font-size:14px}
+
+    .btn{display:block;width:100%;padding:14px;background:#E25822;color:#fff;border:none;border-radius:8px;font:700 16px 'AlibabaSans-Bold',sans-serif;cursor:pointer;transition:background .2s;margin-top:16px}
+    .btn:hover{background:#D04711}
+
+    .sign-in-link{text-align:center;margin-top:18px;font-size:14px;color:#555}
+    .sign-in-link a{color:#E25822;text-decoration:none;font-family:'AlibabaSans-Medium',sans-serif}
+    .sign-in-link a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="decorative-element decorative-1"></div>
+    <div class="decorative-element decorative-2"></div>
+
+    <header>
+      <i class="ri-store-3-fill logo-icon"></i>
+      <div class="logo-text">Laddo Ra Laheriya</div>
+    </header>
+
+    <div class="container">
+      <h1>Create Account</h1>
+
+      <form method="post" action="{% url 'accounts:signup' %}" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="nonfield">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="form-group">
+          <label for="{{ form.full_name.id_for_label }}">Full Name</label>
+          {{ form.full_name }}
+          {{ form.full_name.errors }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.email.id_for_label }}">Email Address</label>
+          {{ form.email }}
+          {{ form.email.errors }}
+          <span class="helper-text">We'll never share your email with anyone else.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+          {{ form.username.errors }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.password1.id_for_label }}">Password</label>
+          {{ form.password1 }}
+          {{ form.password1.errors }}
+          <span class="helper-text">Use at least 8 characters with a mix of letters, numbers & symbols</span>
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+          {{ form.password2 }}
+          {{ form.password2.errors }}
+        </div>
+
+        {% if form.role %}
+          <div class="form-group">
+            <label for="{{ form.role.id_for_label }}">Select Role</label>
+            {{ form.role }}
+            {{ form.role.errors }}
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+
+      <div class="sign-in-link">
+        Already have an account? <a href="{% url 'accounts:login' %}">Sign In</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

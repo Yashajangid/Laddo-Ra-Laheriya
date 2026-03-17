@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}My Profile — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <h2>My Profile ({{request.user.role}})</h2>
+  <form method="post" class="form">{% csrf_token %}{{form.as_p}}<button class="btn">Save</button></form>
+  {% if request.user.role == 'seller' %}
+    <p style="margin-top:10px"><a class="btn" href="{% url 'gigs:new' %}">Upload a Gig</a></p>
+  {% endif %}
+  {% if request.user.role != 'seller' %}
+  <a class="btn" href="{% url 'accounts:become_seller' %}">Become a Seller</a>
+{% else %}
+  <a class="btn" href="{% url 'gigs:new' %}">Post Gig</a>
+{% endif %}
+
+</section>
+{% endblock %}

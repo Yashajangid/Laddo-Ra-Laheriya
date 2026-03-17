@@ -1,0 +1,71 @@
+:root{
+  --marigold:#FFB30F;
+  --mehndi:#1D7874;
+  --beige:#FFF8E8;
+  --brown:#5D4037;
+}
+
+.seller-wrap{background:var(--beige);padding:24px}
+.seller-header{
+  background:linear-gradient(90deg,var(--mehndi),#2a9d8f);
+  color:#fff;padding:16px 22px;
+  border-bottom:5px solid var(--marigold);
+  border-radius:10px;margin-bottom:24px
+}
+
+.seller-container{display:flex;gap:24px}
+.card{
+  background:#fff;border-radius:12px;
+  padding:22px;box-shadow:0 4px 16px rgba(0,0,0,.05)
+}
+
+.sidebar-left{width:240px}
+.sidebar-left a{
+  display:flex;gap:10px;
+  padding:12px;color:var(--brown);
+  text-decoration:none;border-left:4px solid transparent
+}
+.sidebar-left a.active{
+  background:rgba(255,179,15,.15);
+  border-left-color:var(--marigold);
+  color:var(--mehndi);font-weight:600
+}
+.sidebar-title{font-size:12px;color:#777;margin:14px}
+
+.main{flex:1;display:flex;flex-direction:column;gap:24px}
+
+.profile-pic{display:flex;gap:16px;align-items:center}
+.avatar{
+  width:96px;height:96px;border-radius:50%;
+  background:#f2f2f2;border:3px solid var(--marigold);
+  display:grid;place-items:center;font-size:32px;color:#aaa
+}
+
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px
+}
+.form-row.full{grid-column:1/-1}
+.form-row label{display:block;margin-bottom:6px;color:#666}
+.form-row input{
+  width:100%;padding:12px;
+  border-radius:8px;border:1px solid #ddd
+}
+
+.actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}
+.actions.left{justify-content:flex-start}
+
+.btn{
+  padding:11px 22px;border-radius:8px;
+  border:none;font-weight:600;cursor:pointer
+}
+.btn-primary{background:var(--marigold);color:#fff}
+.btn-secondary{background:var(--mehndi);color:#fff}
+.btn-outline{background:#fff;border:1px solid var(--marigold);color:var(--marigold)}
+
+.sidebar-right{width:300px;display:flex;flex-direction:column;gap:18px}
+.stat{border-left:4px solid var(--marigold)}
+
+@media(max-width:1100px){
+  .seller-container{flex-direction:column}
+  .sidebar-left,.sidebar-right{width:100%}
+}

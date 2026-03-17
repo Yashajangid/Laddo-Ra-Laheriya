@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cart — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <h2>My Cart</h2>
+  {% if items %}
+    {% for i in items %}
+      <div class="card" style="margin:8px 0;display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;">
+        <img src="{{ i.gig.image_url }}" style="width:120px;height:90px;object-fit:cover">
+        <div>
+          <b>{{ i.gig.title }}</b> <span class="muted">{{ i.size }}</span>
+        <form action="{% url 'cart:update' %}" method="post" class="row" style="margin-top:6px">{% csrf_token %}
+          <input type="hidden" name="key" value="{{i.key}}">
+          <input type="number" name="qty" value="{{i.qty}}" min="1" style="width:100px">
+          <button class="iconbtn">Update</button>
+          <a class="iconbtn" href="{% url 'cart:remove' i.key %}">Remove</a>
+        </form>
+      </div>
+      <div class="price">₹{{i.subtotal}}</div>
+    </div>
+  {% endfor %}
+  <div class="totals">
+    <div><span>Subtotal</span> <b>₹{{t.subtotal}}</b></div>
+    <div><span>Grand Total</span> <b>₹{{t.grand}}</b></div>
+  </div>
+  <a class="btn" href="{% url 'orders:checkout' %}">Proceed to Checkout</a>
+  {% else %}<p>Your cart is empty.</p>{% endif %}
+</section>
+{% endblock %}

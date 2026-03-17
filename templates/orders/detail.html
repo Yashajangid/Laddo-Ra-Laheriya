@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Order #{{order.id}} — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <h2>Order #{{order.id}}</h2>
+  <p>Status: <b>{{order.get_status_display}}</b> • Amount: ₹{{order.total_amount}}</p>
+  <div class="grid">
+    {% for it in order.items.all %}
+      <div class="card">
+        <img class="card__img"
+     src="{% if it.gig.image %}{{ it.gig.image.url }}{% else %}{% static 'img/p1.png' %}{% endif %}"
+     alt="{{ it.gig.title }}">
+        <div class="card__info">
+          <div class="card__top"><b>{{it.gig.title}}</b><span class="muted">{{it.size}}</span></div>
+          <div class="price">Qty: {{it.qty}} • ₹{{it.subtotal}}</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <a class="btn" href="/">Continue shopping</a>
+</section>
+{% endblock %}

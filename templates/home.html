@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home — LRL{% endblock %}
+
+{% block content %}
+
+<!-- ===== Hero Section ===== -->
+<section class="hero hero--gradient">
+  <div class="hero__inner">
+    <h1 class="hero__title">Handcrafted with Love</h1>
+    <p class="hero__lead">
+      Discover unique handmade products that celebrate traditional craftsmanship and cultural heritage
+    </p>
+    <a class="btn btn--pill btn--primary" href="{% url 'gigs:list' %}?q=festival">
+      Explore Festival Collection
+    </a>
+  </div>
+</section>
+
+<!-- ===== Festival Special Offers ===== -->
+<section class="section">
+  <div class="section__head center">
+    <h2 class="section__title">Festival Special Offers</h2>
+    <span class="section__underline"></span>
+  </div>
+
+  <div class="grid grid--3">
+    {% for g in deals|slice:":3" %}
+      <article class="card offer">
+        <a class="offer__imgwrap" href="{% url 'gigs:detail' g.pk %}">
+  {% if g.image %}
+    <img class="offer__img" src="{{ g.image.url }}" alt="{{ g.title }}">
+  {% else %}
+    <img class="offer__img" src="{% static 'img/p1.png' %}" alt="{{ g.title }}">
+  {% endif %}
+</a>
+
+        <div class="offer__body">
+          <h3 class="offer__name">{{ g.title }}</h3>
+          <p class="offer__desc">{{ g.short_description|default:g.state }}&nbsp;</p>
+          <div class="price">
+            {% if g.discount %}
+              <span class="price__strike">₹{{ g.price }}</span>
+              <span class="price__now">₹{{ g.price_after_discount }}</span>
+            {% else %}
+              <span class="price__now">₹{{ g.price }}</span>
+            {% endif %}
+          </div>
+          <div class="row center">
+            <a class="btn btn--pill btn--outline" href="{% url 'gigs:detail' g.pk %}">
+              Shop Now
+            </a>
+          </div>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted center">No festival offers at the moment.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===== Best Sellers ===== -->
+<section class="section section--muted">
+  <div class="section__head center">
+    <h2 class="section__title">Best Sellers</h2>
+    <span class="section__underline"></span>
+  </div>
+
+  <div class="grid grid--4">
+    {% for g in best|slice:":8" %}
+      <article class="product">
+        <a class="product__imgwrap" href="{% url 'gigs:detail' g.pk %}">
+  {% if g.image %}
+    <img class="product__img" src="{{ g.image.url }}" alt="{{ g.title }}">
+  {% else %}
+    <img class="product__img" src="{% static 'img/p1.png' %}" alt="{{ g.title }}">
+  {% endif %}
+</a>
+
+        <div class="product__body">
+          <h3 class="product__title">{{ g.title }}</h3>
+
+          <div class="rating" aria-label="rating">
+            <i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+            <i class="ri-star-line"></i>
+          </div>
+
+          <div class="price price--tight">
+            {% if g.discount %}
+              <span class="price__strike">₹{{ g.price }}</span>
+              <span class="price__now">₹{{ g.price_after_discount }}</span>
+            {% else %}
+              <span class="price__now">₹{{ g.price }}</span>
+            {% endif %}
+          </div>
+
+          <div class="row">
+            <a class="btn btn--pill btn--primary btn--block" href="{% url 'gigs:detail' g.pk %}">
+              <i class="ri-shopping-cart-2-line"></i>&nbsp; Add to Cart
+            </a>
+          </div>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted center">No best sellers yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===== Shop by Category ===== -->
+<section class="section">
+  <div class="section__head center">
+    <h2 class="section__title">Shop by Category</h2>
+    <span class="section__underline"></span>
+  </div>
+
+  <div class="grid grid--4">
+    {% for s in states|slice:":4" %}
+      <a class="category" href="{% url 'gigs:list' %}?state={{ s }}">
+        <div class="category__img" aria-hidden="true"></div>
+        <div class="category__overlay">
+          <h3 class="category__title">{{ s }}</h3>
+          <p class="category__sub">Explore crafts</p>
+        </div>
+      </a>
+    {% empty %}
+      <p class="muted center">No categories available.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

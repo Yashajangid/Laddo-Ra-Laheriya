@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ profile.display_name|default:seller.username }}</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/seller_public_profile.css' %}">
+</head>
+
+<body>
+
+<header class="top-header">
+  <div class="logo">
+    <i class="ri-store-3-fill"></i>
+    <span>Laddoo Ra Laheriya</span>
+  </div>
+
+  <button class="btn-primary">Follow Seller</button>
+</header>
+
+<!-- BANNER -->
+<div class="profile-banner">
+  <div class="overlay"></div>
+  <img src="https://images.unsplash.com/photo-1628153488257-2e4004940026?q=80&w=2000" alt="">
+</div>
+
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="left">
+
+    <div class="card profile-card">
+      <div class="avatar-wrap">
+        {% if profile.avatar %}
+          <img src="{{ profile.avatar.url }}" class="avatar">
+        {% else %}
+          <div class="avatar placeholder"><i class="ri-user-line"></i></div>
+        {% endif %}
+      </div>
+
+      <h2>{{ profile.display_name|default:seller.username }}</h2>
+      <p class="location">
+        <i class="ri-map-pin-line"></i>
+        {{ profile.city|default:"N/A" }}, {{ profile.state|default:"N/A" }}
+      </p>
+
+      <p class="rating muted">No ratings yet</p>
+      <p class="muted">Member since {{ seller.date_joined|date:"Y" }}</p>
+
+      <div class="section">
+        <h4><i class="ri-contacts-book-line"></i> Contact</h4>
+        <p><i class="ri-phone-line"></i> {{ profile.phone|default:"N/A" }}</p>
+        <p><i class="ri-mail-line"></i> {{ profile.public_email|default:"N/A" }}</p>
+        <p><i class="ri-map-pin-2-line"></i> {{ profile.address|default:"N/A" }}</p>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CENTER -->
+  <main class="center">
+
+    <div class="tabs">
+      <div class="tab active">About</div>
+      <div class="tab">Gigs ({{ gigs.count }})</div>
+    </div>
+
+    <div class="card">
+      <h3>About the Artisan</h3>
+      <p>{{ profile.craft_specialization|default:"No description available." }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Active Listings</h3>
+
+      {% if gigs %}
+      <div class="gigs-grid">
+        {% for gig in gigs %}
+        <div class="gig-card">
+          <img src="{{ gig.image.url }}" alt="">
+          <div class="gig-body">
+            <h4>{{ gig.title }}</h4>
+            <span class="price">₹{{ gig.price }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+        <p class="muted">No gigs uploaded yet.</p>
+      {% endif %}
+    </div>
+
+  </main>
+
+  <!-- RIGHT -->
+  <aside class="right">
+
+    <div class="card">
+      <h4><i class="ri-share-line"></i> Connect</h4>
+
+      <div class="socials">
+        {% if profile.instagram %}
+          <a href="https://instagram.com/{{ profile.instagram }}"><i class="ri-instagram-fill"></i></a>
+        {% endif %}
+        {% if profile.twitter %}
+          <a href="https://twitter.com/{{ profile.twitter }}"><i class="ri-twitter-x-fill"></i></a>
+        {% endif %}
+        {% if profile.linkedin %}
+          <a href="{{ profile.linkedin }}"><i class="ri-linkedin-fill"></i></a>
+        {% endif %}
+        {% if profile.whatsapp %}
+          <a href="https://wa.me/{{ profile.whatsapp|cut:'+' }}"><i class="ri-whatsapp-fill"></i></a>
+        {% endif %}
+
+        {% if not profile.instagram and not profile.twitter and not profile.linkedin and not profile.whatsapp %}
+          <p class="muted">No social links</p>
+        {% endif %}
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<footer>
+  © {{ now|date:"Y" }} Laddoo Ra Laheriya · Made with ❤️ in India
+</footer>
+
+</body>
+</html>

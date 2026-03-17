@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Gigs — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <div class="section__head">
+    <h2>All Gigs</h2>
+    <form method="get" class="row">
+      <select name="category">
+        <option value="">All categories</option>
+        {% for code,label in CATEGORIES %}
+          <option value="{{code}}" {% if request.GET.category == code %}selected{% endif %}>{{label}}</option>
+        {% endfor %}
+      </select>
+      <input name="state" placeholder="State" value="{{request.GET.state}}"/>
+      <input name="q" placeholder="Search" value="{{request.GET.q}}"/>
+      <button class="btn">Filter</button>
+    </form>
+  </div>
+  <div class="grid">
+    {% for g in gigs %}{% include 'gigs/_card.html' with g=g %}{% empty %}<p>No gigs found.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

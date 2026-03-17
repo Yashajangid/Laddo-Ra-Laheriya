@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Chat — {{gig.title}}{% endblock %}
+{% block content %}
+<section class="container section">
+  <h2>Chat about: {{gig.title}}</h2>
+  <div id="msgs" class="chat" style="min-height:300px;border:1px solid var(--border);padding:10px;border-radius:12px"></div>
+  <form id="chatForm" class="row" style="margin-top:8px">{% csrf_token %}
+    <input id="chatText" style="flex:1" placeholder="Type a message…">
+    <button class="btn">Send</button>
+  </form>
+</section>
+<script>
+const listURL = "{% url 'chatx:list' gig.id %}";
+const sendURL = "{% url 'chatx:send' gig.id %}";
+function render(items){
+  const box = document.getElementById('msgs');
+  box.innerHTML = items.map(m => `<div class="msg"><div class="bubble"><b>${m.sender__username}:</b> ${m.text}</div></div>`).join("");
+  box.scrollTop = box.scrollHeight;
+}
+async function poll(){ const r = await fetch(listURL); const j = await r.json(); render(j.messages); }
+setInterval(poll, 2000); poll();
+document.getElementById('chatForm').onsubmit = async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  fd.append('text', document.getElementById('chatText').value);
+  await fetch(sendURL, {method:'POST', headers:{'X-CSRFToken': fd.get('csrfmiddlewaretoken')}, body: fd});
+  document.getElementById('chatText').value=''; poll();
+}
+</script>
+{% endblock %}

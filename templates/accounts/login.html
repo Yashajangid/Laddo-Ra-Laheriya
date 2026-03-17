@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign In — LRL{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+  /* Page background & stripe layer */
+  body.auth {
+    background: linear-gradient(135deg, rgba(229,0,125,.05) 0%, rgba(247,181,0,.10) 100%);
+    min-height: 100vh;
+  }
+  body.auth::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background-image:repeating-linear-gradient(
+      45deg, transparent, transparent 20px, rgba(229,0,125,.03) 20px, rgba(229,0,125,.03) 40px
+    );
+  }
+
+  /* Card */
+  .auth-wrap{max-width:1440px;margin:0 auto;padding:60px 16px;display:flex;justify-content:center}
+  .signin-card{
+    width:100%; max-width:420px; background:#fff; border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08); padding:32px; position:relative; overflow:hidden;
+  }
+  .signin-card::before{
+    content:""; position:absolute; left:0; top:0; right:0; height:6px;
+    background:linear-gradient(to right,#E5007D,#F7B500,#007F7D);
+  }
+  .signin-title{font:600 24px/1.2 "Poppins",system-ui; margin-bottom:8px; color:#333}
+  .signin-sub{color:#666; font-size:14px; margin-bottom:22px}
+
+  .form-group{margin:14px 0}
+  .form-label{display:block; font-size:14px; margin-bottom:6px; color:#333}
+  .form-input{
+    width:100%; padding:14px 16px; border:1px solid #E0E0E0; border-radius:8px; font-size:14px;
+    transition:box-shadow .2s, border-color .2s;
+  }
+  .form-input:focus{outline:none; border-color:#007F7D; box-shadow:0 0 0 2px rgba(0,127,125,.2)}
+  .password-wrapper{position:relative}
+  .toggle-password{position:absolute; right:12px; top:50%; transform:translateY(-50%); border:0; background:none; color:#999; cursor:pointer}
+
+  .signin-button{
+    width:100%; margin-top:10px; padding:14px; border:0; border-radius:8px;
+    background:#007F7D; color:#fff; font:500 16px/1 "Poppins",system-ui; cursor:pointer; transition:transform .15s, filter .15s;
+  }
+  .signin-button:hover{filter:brightness(.95); transform:translateY(-1px)}
+
+  .utility-row{display:flex; justify-content:space-between; align-items:center; margin-top:16px; font-size:14px}
+  .link{color:#007F7D; text-decoration:none}
+  .link:hover{color:#E5007D; text-decoration:underline}
+
+  .form-errors{background:#fff5f6; border:1px solid #ffd2d8; color:#9a0038; padding:10px 12px; border-radius:8px; margin-bottom:10px; font-size:14px}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="auth-wrap">
+  <div class="signin-card">
+    <h1 class="signin-title">Welcome Back</h1>
+    <p class="signin-sub">Sign in to continue to your Laddoo Ra Laheriya account</p>
+
+    <form method="post" action="{% url 'accounts:login' %}">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="form-group">
+        <label class="form-label" for="id_username">Email or Username</label>
+        <input id="id_username" name="username" type="text" class="form-input"
+               placeholder="Enter your email or username"
+               value="{{ form.username.value|default:'' }}" autocomplete="username" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="id_password">Password</label>
+        <div class="password-wrapper">
+          <input id="id_password" name="password" type="password" class="form-input"
+                 placeholder="Enter your password" autocomplete="current-password" required>
+          <button type="button" class="toggle-password" aria-label="Show password">
+            <i class="ri-eye-line"></i>
+          </button>
+        </div>
+      </div>
+
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+      <button class="signin-button" type="submit">Sign In</button>
+
+      <div class="utility-row">
+        <a class="link" href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+        <span>New here? <a class="link" href="{% url 'accounts:signup' %}">Sign Up</a></span>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}
+
+{% block body_end %}
+<script>
+  // mark body for auth page styles
+  document.body.classList.add('auth');
+
+  // toggle eye icon
+  const btn = document.querySelector('.toggle-password');
+  const pwd = document.querySelector('#id_password');
+  if (btn && pwd) {
+    btn.addEventListener('click', () => {
+      const isHidden = pwd.type === 'password';
+      pwd.type = isHidden ? 'text' : 'password';
+      btn.innerHTML = isHidden ? '<i class="ri-eye-off-line"></i>' : '<i class="ri-eye-line"></i>';
+    });
+  }
+</script>
+{% endblock %}

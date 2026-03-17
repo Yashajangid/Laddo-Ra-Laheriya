@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<style>
+  /* ==== Fonts ==== */
+  @font-face{font-family:'MiSans';src:url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Regular.ttf') format('truetype');font-weight:400}
+  @font-face{font-family:'MiSans';src:url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Medium.ttf') format('truetype');font-weight:500}
+  @font-face{font-family:'MiSans';src:url('https://assets-persist.lovart.ai/agent-static-assets/MiSans-Bold.ttf') format('truetype');font-weight:700}
+
+  :root{
+    --marigold:#FFB81C;
+    --vermilion:#E25822;
+    --peacock-blue:#005F73;
+    --indigo:#2C3E50;
+    --off-white:#FAF7F2;
+  }
+  .cat-page{background:#faf7f2}
+  .cat-pattern{
+    background:repeating-linear-gradient(45deg,rgba(255,184,28,.03),rgba(255,184,28,.03) 10px,rgba(255,184,28,.05) 10px,rgba(255,184,28,.05) 20px);
+  }
+
+  /* filter bar */
+  .filter-bar{background:#fff;padding:15px 24px;border:1px solid #eee;border-radius:10px;display:flex;gap:14px;align-items:center;position:sticky;top:64px;z-index:5}
+  .dropdown{position:relative}
+  .dropdown-toggle{display:flex;gap:8px;align-items:center;border:1px solid #ddd;padding:10px 14px;border-radius:8px;font-weight:600;color:var(--indigo);cursor:pointer;background:#fff}
+  .dropdown-toggle i:first-child{color:var(--marigold)}
+  .dropdown-menu{position:absolute;left:0;top:110%;width:260px;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.08);display:none;padding:10px 0}
+  .dropdown:hover .dropdown-menu{display:block}
+  .dropdown-menu h4{font-size:14px;color:#666;padding:10px 14px;border-bottom:1px solid #eee}
+  .dropdown-menu a{display:block;color:#333;text-decoration:none;padding:10px 14px}
+  .dropdown-menu a:hover{background:#f6f6f6;color:var(--vermilion)}
+
+  .search{flex:1;position:relative}
+  .search input{width:100%;padding:12px 44px 12px 18px;border:1px solid #ddd;border-radius:30px;background:#f9f9f9}
+  .search i{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#999}
+
+  .state-select{appearance:none;border:0;background:var(--peacock-blue);color:#fff;border-radius:8px;padding:12px 40px 12px 14px;font-weight:600}
+  .state-wrap{position:relative}
+  .state-wrap i{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#fff;pointer-events:none}
+  .btn-filter{background:var(--marigold);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-weight:700}
+
+  /* heading */
+  .cat-heading{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--indigo);margin:28px 0 18px}
+  .cat-heading i{color:#e25822}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  @media (max-width:1200px){.grid{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+  .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.05);transition:.25s;position:relative}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,0,0,.08)}
+  .img{height:220px;position:relative;overflow:hidden}
+  .img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .card:hover .img img{transform:scale(1.05)}
+
+  /* arch overlay + ribbons */
+  .img:before{
+     content:"";position:absolute;inset:0;border-radius:14px 14px 0 0;
+     background:linear-gradient(to bottom,rgba(0,0,0,.06),transparent 55%);
+     clip-path:polygon(0 0,100% 0,100% 85%,86% 85%,75% 100%,25% 100%,14% 85%,0 85%);
+     pointer-events:none;
+  }
+  .ribbon{position:absolute;left:0;top:14px;background:rgba(226,88,34,.9);color:#fff;padding:5px 16px;font-size:12px;font-weight:700;clip-path:polygon(0 0,100% 0,90% 100%,0% 100%)}
+  .disc{position:absolute;right:14px;top:14px;background:var(--marigold);color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+
+  .info{padding:14px;border-top:3px solid var(--indigo)}
+  .name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--indigo)}
+  .meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .price{color:var(--vermilion);font-weight:800}
+  .loc{display:flex;align-items:center;gap:6px;color:var(--peacock-blue);font-size:12px}
+
+  .actions{display:flex;justify-content:space-between;padding:0 14px 14px;opacity:0;transform:translateY(8px);transition:.25s}
+  .card:hover .actions{opacity:1;transform:translateY(0)}
+  .btn{border:0;border-radius:6px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer}
+  .btn-view{background:var(--peacock-blue);color:#fff}
+  .btn-save{background:#f1f1f1;color:var(--indigo)}
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="cat-page cat-pattern">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:24px 24px 40px">
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="dropdown">
+        <div class="dropdown-toggle"><i class="ri-umbrella-line"></i>All Categories<i class="ri-arrow-down-s-line"></i></div>
+        <div class="dropdown-menu">
+          <h4>All Categories</h4>
+          <a href="{% url 'gigs:categories' %}">All</a>
+          {% for c in categories %}
+            <a href="{% url 'gigs:categories' %}?category={{ c.slug }}">{{ c.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <form class="search" method="get" action="{% url 'gigs:categories' %}">
+        <input type="text" name="q" placeholder="Search for handcrafted products…" value="{{ request.GET.q }}">
+        {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+        <i class="ri-search-line"></i>
+      </form>
+
+      <form class="state-wrap" method="get" action="{% url 'gigs:categories' %}">
+        <select class="state-select" name="state" onchange="this.form.submit()">
+          <option value="">Select State</option>
+          {% for st in states %}
+            <option value="{{ st }}" {% if st == request.GET.state %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+        <i class="ri-arrow-down-s-line"></i>
+        {% if request.GET.q %}<input type="hidden" name="q" value="{{ request.GET.q }}">{% endif %}
+        {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+      </form>
+
+      <a class="btn-filter" href="{% url 'gigs:categories' %}">Clear</a>
+    </div>
+
+    <!-- Title -->
+    <h2 class="cat-heading"><i class="ri-layout-masonry-line"></i>Browse Categories</h2>
+
+    <!-- Grid -->
+    <div class="grid">
+      {% for g in gigs %}
+      <div class="card">
+        <div class="img">
+          <img src="{{ g.image_url }}" alt="{{ g.title }}">
+          <div class="ribbon">{{ g.category_name }}</div>
+          {% if g.discount_percent %}<div class="disc">{{ g.discount_percent }}%</div>{% endif %}
+        </div>
+        <div class="info">
+          <div class="name" title="{{ g.title }}">{{ g.title }}</div>
+          <div class="meta">
+            <div class="price">₹{{ g.price_display }}</div>
+            <div class="loc"><i class="ri-map-pin-line"></i>{{ g.city }}</div>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn btn-view" href="{% url 'gigs:detail' g.id %}">View Details</a>
+          <button class="btn btn-save" type="button"><i class="ri-heart-line"></i> Save</button>
+        </div>
+      </div>
+      {% empty %}
+        <p>No items match your filters.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

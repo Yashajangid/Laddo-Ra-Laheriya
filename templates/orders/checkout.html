@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Checkout — LRL{% endblock %}
+{% block content %}
+<section class="container section">
+  <h2>Checkout</h2>
+  <p>Order #{{ order.id }} • Amount: <b>₹{{ t.grand }}</b></p>
+
+  <div class="card" style="padding:16px;">
+    <h3>Choose Payment Method</h3>
+
+    {% if razorpay_key and order.razorpay_order_id and rzp_amount_paise %}
+      <div class="row" style="display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 16px;">
+        <button id="pay-card" class="btn">Pay by Card (Razorpay)</button>
+        <button id="pay-upi"  class="btn ghost">Pay by UPI (Razorpay)</button>
+      </div>
+    {% else %}
+      <p class="muted">Online payment not configured. Use COD or add Razorpay keys in <code>.env</code>.</p>
+    {% endif %}
+
+    <!-- COD uses its own form (no wrapping outer form) -->
+    <form action="{% url 'orders:cod' order.id %}" method="post" style="margin-top:8px;">
+      {% csrf_token %}
+      <button class="btn outline">Cash on Delivery</button>
+    </form>
+
+    <!-- Hidden form submitted after successful Razorpay payment -->
+    <form id="rzp-success" action="{% url 'orders:success' order.id %}" method="post" style="display:none;">
+      {% csrf_token %}
+      <input type="hidden" name="razorpay_payment_id" id="rzp_payment_id">
+      <input type="hidden" name="razorpay_signature"   id="rzp_signature">
+    </form>
+  </div>
+
+  {% if razorpay_key and order.razorpay_order_id and rzp_amount_paise %}
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    const RZP_BASE = {
+      key: "{{ razorpay_key }}",
+      amount: {{ rzp_amount_paise }},
+      currency: "INR",
+      name: "Laddoo Ra Laheriya",
+      description: "Order #{{ order.id }}",
+      order_id: "{{ order.razorpay_order_id }}",
+      theme: { color: "#d97706" },
+      handler: function (response) {
+        document.getElementById("rzp_payment_id").value = response.razorpay_payment_id || "";
+        document.getElementById("rzp_signature").value   = response.razorpay_signature   || "";
+        document.getElementById("rzp-success").submit();
+      },
+      prefill: {
+        name: "{{ request.user.get_full_name|default:request.user.username }}",
+        email: "{{ request.user.email }}"
+      }
+    };
+    function payWith(methodFlags) {
+      const opts = Object.assign({}, RZP_BASE, { method: methodFlags });
+      const rzp = new Razorpay(opts);
+      rzp.open();
+    }
+    document.getElementById("pay-card")?.addEventListener("click", function(e){
+      e.preventDefault();
+      payWith({ card:'1', upi:'0', netbanking:'0', wallet:'0', emi:'0', paylater:'0' });
+    });
+    document.getElementById("pay-upi")?.addEventListener("click", function(e){
+      e.preventDefault();
+      payWith({ card:'0', upi:'1', netbanking:'0', wallet:'0', emi:'0', paylater:'0' });
+    });
+  </script>
+  {% endif %}
+</section>
+{% endblock %}

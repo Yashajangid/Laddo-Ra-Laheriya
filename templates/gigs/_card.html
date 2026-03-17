@@ -1,0 +1,11 @@
+{% load static %}
+<div class="card">
+  {% if g.discount %}<span class="badge-off">{{ g.discount }}% OFF</span>{% endif %}
+  <a href="{% url 'gigs:detail' g.pk %}">
+    <img src="{{ g.image_url }}" alt="{{ g.title }}">
+  </a>
+  <div class="card__info">
+    <div class="card__top"><b>{{ g.title }}</b><span class="muted">{{ g.state }}</span></div>
+    <div class="price">₹{{ g.price_after_discount }}</div>
+  </div>
+</div>
